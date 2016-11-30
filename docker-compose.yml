@@ -1,0 +1,10 @@
+version: '2'
+services:
+  db:
+    image: rethinkdb:2.3.5
+
+  api:
+    build: api
+    env_file: .env
+    ports:
+      - "8000:8000"

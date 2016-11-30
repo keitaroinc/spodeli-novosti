@@ -1,0 +1,10 @@
+cffi>=1.8.0
+falcon==1.1.0
+functools32==3.2.3.post2
+greenlet==0.4.10
+gunicorn==19.6.0
+jsonschema==2.5.1
+python-mimeparse==1.6.0
+readline==6.2.4.1
+rethinkdb==2.3.0.post6
+six==1.10.0
