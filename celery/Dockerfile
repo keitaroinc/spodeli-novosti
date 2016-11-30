@@ -20,7 +20,9 @@ RUN apk add --no-cache python \
     apk del .build-deps
 
 COPY requirements.txt /srv/
+COPY worker /srv/worker
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install -e /srv/worker
 
 CMD ["celery", "worker", "--app=worker.app", "--loglevel=DEBUG"]
