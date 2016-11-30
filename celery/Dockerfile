@@ -25,4 +25,4 @@ COPY worker /srv/worker
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install -e /srv/worker
 
-CMD ["celery", "worker", "--app=worker.app", "--loglevel=DEBUG"]
+CMD ["celery", "worker", "--app=worker.app", "--beat", "--loglevel=DEBUG"]
