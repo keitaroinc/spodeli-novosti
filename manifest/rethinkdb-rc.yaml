@@ -5,12 +5,12 @@ metadata:
 spec:
   replicas: 1
   selector:
-    name: rethinkdb
+    provider: rethinkdb
   template:
     metadata:
       labels:
         app: rethinkdb
-        name: rethinkdb
+        provider: rethinkdb
     spec:
       containers:
       - name: rethinkdb

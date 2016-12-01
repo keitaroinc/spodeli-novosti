@@ -9,8 +9,8 @@ spec:
   type: LoadBalancer
   ports:
   - name: spodeli-api
-    port: 5001
-    targetPort: 5001
+    port: 80
+    targetPort: 8000
     protocol: TCP
   selector:
     provider: spodeli-api

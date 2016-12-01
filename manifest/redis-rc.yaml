@@ -5,12 +5,12 @@ metadata:
 spec:
   replicas: 1
   selector:
-    name: redis
+    provider: redis
   template:
     metadata:
       labels:
         app: redis
-        name: redis
+        provider: redis
     spec:
       containers:
       - name: redis

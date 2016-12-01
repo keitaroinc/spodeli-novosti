@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: spodeli-frontend
+  labels:
+    provider: spodeli-frontend
+spec:
+  replicas: 1
+  selector:
+    provider: spodeli-frontend
+  template:
+    metadata:
+      name: spodeli-frontend
+      labels:
+        provider: spodeli-frontend
+    spec:
+      containers:
+      - name: spodeli-frontend
+        image: keitaro/spodelinovosti
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
