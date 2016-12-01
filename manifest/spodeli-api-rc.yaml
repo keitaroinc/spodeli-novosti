@@ -19,5 +19,10 @@ spec:
         image: keitaro/spodelinovosti-api
         imagePullPolicy: Always
         ports:
-        - containerPort: 5001
-        command: ["source", "/data/.env"]
+        - containerPort: 8000
+        env:
+        - name: RDB_HOST
+          value: "rethinkdb"
+        - name: BROKER_URL
+          value: "redis://redis:6379/0"
+          

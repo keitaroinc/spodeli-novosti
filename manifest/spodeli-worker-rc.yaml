@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: spodeli-worker
+  labels:
+    provider: spodeli-worker
+spec:
+  replicas: 1
+  selector:
+    provider: spodeli-worker
+  template:
+    metadata:
+      name: spodeli-worker
+      labels:
+        provider: spodeli-worker
+    spec:
+      containers:
+      - name: spodeli-worker
+        image: keitaro/spodelinovosti-worker
+        imagePullPolicy: Always
+        env:
+        - name: BROKER_URL
+          value: "redis://redis:6379/0"
+        - name: C_FORCE_ROOT
+          value: "true"
+        - name: SMTP_SERVER
+          value: "mailtrap.io"
+        - name: SMTP_SERVER_USER
+          value: "1425016e3fe756"
+        - name: SMTP_SERVER_PASSWORD
+          value: "c59967b216603f"
+        - name: SMTP_SERVER_PORT
+          value: "465"

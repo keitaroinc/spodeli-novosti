@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rethinkdb
+  labels:
+    provider: rethinkdb
+spec:
+  type: ClusterIP
+  ports:
+  - name: rethinkdb
+    port: 28015
+    targetPort: 28015
+    protocol: TCP
+  selector:
+    provider: rethinkdb
