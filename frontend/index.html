@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Сподели Новости</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <nav class="navbar navbar-default">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="text-uppercase navbar-brand" href="#">Сподели Новости</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right" role="tablist">
+            <li><a href="#add-user" role="tab" data-toggle="tab">
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="glyphicon-label">Додај претплатник</span>
+              </a>
+            </li>
+            <li>
+              <a href="#send-message" role="tab" data-toggle="tab">
+                <span class="glyphicon glyphicon-envelope"></span>
+                <span class="glyphicon-label">Испрати порака</span>
+              </a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <p>На овој билтен се претплатени вкупно <strong class="text-success">#</strong> корисници. Со испраќање на порака, <strong class="text-success">се обраќате до сите нив</strong>.</p>
+      <div class="tab-content">
+        <div role="tabpanel" id="add-user" class="tab-pane fade">
+          <h2>Додај претплатник</h2>
+          <hr>
+          <p class="alert alert-danger">Порака за грешка</p>
+          <p class="alert alert-success">Порака за успешно завршена акција</p>
+          <form action="">
+            <div class="form-group">
+              <label for="name">Име</label>
+              <input class="form-control" id="name" type="text" placeholder="Внесете име" />
+            </div>
+            <div class="form-group">
+              <label for="name">Адреса за е-пошта</label>
+              <input class="form-control" id="email" type="email" placeholder="Внесете адреса за е-пошта" />
+            </div>
+            <button type="submit" class="btn btn-primary">Додај</button>
+          </form>
+        </div>
+        <div role="tabpanel" id="send-message" class="tab-pane fade">
+          <h2>Испрати порака</h2>
+          <hr>
+          <form id="newsletter-send" action="">
+            <div class="form-group">
+              <label for="name">Наслов</label>
+              <input class="form-control" id="subject" type="text" placeholder="Внесете наслов" />
+            </div>
+            <div class="form-group">
+              <label for="name">Адреса за е-пошта</label>
+              <textarea class="form-control" id="body" rows="10" placeholder="Внесете содржина на пораката"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Испрати</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap components -->
+    <script src="bootstrap/js/collapse.js"></script>
+    <script src="bootstrap/js/tab.js"></script>
+    <script src="bootstrap/js/transition.js"></script>
+
+    <!-- Custom JS -->
+    <script src="bootstrap/js/transition.js"></script>
+  </body>
+</html>
