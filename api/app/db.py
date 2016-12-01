@@ -4,49 +4,39 @@ import json
 from settings import RDB_HOST, RDB_PORT, RDB_DB
 
 
-class RethinkDBFactory(object):
+class RethinkDBClient(object):
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
-        self._conn.close()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            raise
 
-    def __init__(self, host=RDB_HOST, port=RDB_PORT, db=RDB_DB, tables=None,
-                 **kwargs):
-        if tables is None:
-            tables = {}
+        self._close()
+
+    def __init__(self, host=None, port=None, db=None):
+        if host is None:
+            host = RDB_HOST
+        if port is None:
+            port = RDB_PORT
+        if db is None:
+            db = RDB_DB
+
         self.host = host
         self.port = port
         self._db = db
-        self._tables = tables
-        self._conn = None
-        self._init()
+        self._conn = r.connect(self.host, self.port, self.db)
 
-    def _init(self):
-        conn = self.conn
+    def _close(self):
+        self._conn.close()
 
-        try:
-            r.db_create(self._db).run(conn)
-        except r.errors.ReqlOpFailedError as e:
-            pass
+    @property
+    def conn(self):
+        return self._conn
 
-        for table_name, index_names in self._tables.items():
-            self.create_table(table_name, index_names)
-
-    def create_table(self, table_name, index_names=None):
-        if index_names is None:
-            index_names = []
-        conn = self.conn
-        try:
-            r.table_create(table_name).run(conn)
-        except r.errors.ReqlOpFailedError as e:
-            pass
-
-        for idx_name in index_names:
-            try:
-                r.table(table_name).index_create(idx_name).run(conn)
-            except r.errors.ReqlOpFailedError as e:
-                pass
+    @property
+    def db(self):
+        return self._db
 
     def insert(self, table_name, data):
         conn = self.conn
@@ -58,8 +48,8 @@ class RethinkDBFactory(object):
     def update(self, table_name, id, data):
         conn = self.conn
         try:
-            r.table(table_name).filter(r.row['id'] == id).update(data).\
-                    run(conn)
+            r.table(table_name).filter(r.row['id'] == id).update(data). \
+                run(conn)
         except r.errors.ReqlOpFailedError as e:
             raise e.message
 
@@ -92,26 +82,37 @@ class RethinkDBFactory(object):
         else:
             return json.dumps([json.dumps(item) for item in result])
 
-    @property
-    def conn(self):
-        if self._conn is None:
-            return r.connect(self.host, self.port, self.db)
-        else:
-            return self._conn
 
-    @property
-    def db(self):
-        return self._db
+class RethinkDBFactory(object):
+    def __init__(self, host=RDB_HOST, port=RDB_PORT, db=RDB_DB, tables=None,
+                 **kwargs):
+        if tables is None:
+            tables = {}
+        self.client = RethinkDBClient(host, port, db)
+        self._tables = tables
+        self._init()
 
+    def _init(self):
+        conn = self.conn
+        try:
+            r.db_create(self._db).run(conn)
+        except r.errors.ReqlOpFailedError as e:
+            pass
 
-class RethinkResource(object):
-    def __init__(self, factory=None, host=RDB_HOST, port=int(RDB_PORT),
-                 db=RDB_DB, tables=None, **kwargs):
-        if factory is None:
-            self.factory = RethinkDBFactory(host, port, db, tables, **kwargs)
-        else:
-            self.factory = factory
+        for table_name, index_names in self._tables.items():
+            self.create_table(table_name, index_names)
 
-    @property
-    def conn(self):
-        return self.factory.conn
+    def create_table(self, table_name, index_names=None):
+        if index_names is None:
+            index_names = []
+        conn = self.client.conn
+        try:
+            r.table_create(table_name).run(conn)
+        except r.errors.ReqlOpFailedError as e:
+            pass
+
+        for idx_name in index_names:
+            try:
+                r.table(table_name).index_create(idx_name).run(conn)
+            except r.errors.ReqlOpFailedError as e:
+                pass

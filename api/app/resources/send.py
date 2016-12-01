@@ -4,7 +4,7 @@ import json
 from falcon import HTTPBadRequest
 from app.helpers.schema_validator import validate_newsletter
 from app.response import ok
-
+from app.db import RethinkDBClient
 
 class SendResource(object):
     def __init__(self, *args, **kwargs):
@@ -20,7 +20,9 @@ class SendResource(object):
             raise HTTPBadRequest('Invalid JSON', e.message)
         else:
             try:
-                subscribers = []
+                with RethinkDBClient() as rdb:
+                    subscribers = rdb.get("subscribers", )
+
                 map(lambda s: send_mail.delay(s["email"],
                                               result["subject"],
                                               result["body"]), subscribers)
