@@ -3,16 +3,14 @@ from rethinkdb.errors import RqlError
 import json
 from falcon import HTTPBadRequest, HTTP_400
 from falcon.util.uri import parse_query_string
-from app.db import RethinkResource
 from app.helpers.schema_validator import validate_subscriber
 from app.response import ok, bad_request
+from app.db import RethinkDBClient
 
 
-class SubscriberResource(RethinkResource):
+class SubscriberResource(object):
     def __init__(self, *args, **kwargs):
-        RethinkResource.__init__(self, *args, **kwargs)
         self._table_name = "subscribers"
-        self.factory.create_table(self._table_name)
 
     def on_get(self, req, resp, id=None, offset=0, limit=200):
         """Get all subscribers if no query args. If email in query args
@@ -35,14 +33,15 @@ class SubscriberResource(RethinkResource):
                 raise HTTPBadRequest('Invalid value for limit', e.message)
 
         try:
+            rdb = RethinkDBClient()
             if id:
-                resp.body = self.factory.get(self._table_name, 'id', id)
+                resp.body = rdb.get(self._table_name, 'id', id)
             elif email:
-                resp.body = self.factory.get(self._table_name, 'email',
-                                             email)
+                resp.body = rdb.get(self._table_name, 'email',
+                                    email)
             elif limit:
-                resp.body = self.factory.get_all(self._table_name,
-                                                 offset*limit, limit)
+                resp.body = rdb.get_all(self._table_name,
+                                        offset * limit, limit)
             else:
                 resp.status = HTTP_400
                 resp.body = bad_request(info='Invalid request')
@@ -58,13 +57,14 @@ class SubscriberResource(RethinkResource):
         except Exception as e:
             raise HTTPBadRequest('Invalid JSON', e.message)
         else:
-            if self.factory.get(self._table_name, 'email', result["email"]):
+            rdb = RethinkDBClient()
+            if rdb.get(self._table_name, 'email', result["email"]):
                 resp.status = HTTP_400
                 resp.body = bad_request(info='Subscriber with that email '
-                                        'address already exists')
+                                             'address already exists')
             else:
                 try:
-                    self.factory.insert(self._table_name, result)
+                    rdb.insert(self._table_name, result)
                 except RqlError as e:
                     raise HTTPBadRequest('Can not create subscriber',
                                          e.message)
@@ -77,14 +77,16 @@ class SubscriberResource(RethinkResource):
             raw_json = req.stream.read()
             result = json.loads(raw_json, encoding='utf-8')
             validate_subscriber(result)
-            self.factory.get(self._table_name, 'id', id)[0]
+            rdb = RethinkDBClient()
+            rdb.get(self._table_name, 'id', id)[0]
         except IndexError:
             raise HTTPBadRequest('Subscriber ' + id + ' does not exist')
         except Exception as e:
             raise HTTPBadRequest('Invalid JSON', e.message)
         else:
             try:
-                self.factory.update(self._table_name, id, result)
+                rdb = RethinkDBClient()
+                rdb.update(self._table_name, id, result)
             except RqlError as e:
                 raise HTTPBadRequest('Can not update subscriber' + id,
                                      e.message)
@@ -94,12 +96,14 @@ class SubscriberResource(RethinkResource):
     def on_delete(self, req, resp, id):
         """Delete subscriber"""
         try:
-            self.factory.get(self._table_name, 'id', id)[0]
+            rdb = RethinkDBClient()
+            rdb.get(self._table_name, 'id', id)[0]
         except IndexError:
             raise HTTPBadRequest('Subscriber ' + id + ' does not exist')
         else:
             try:
-                self.factory.delete(self._table_name, id)
+                rdb = RethinkDBClient()
+                rdb.delete(self._table_name, id)
             except RqlError as e:
                 raise HTTPBadRequest('Can not delete subscriber' + id,
                                      e.message)

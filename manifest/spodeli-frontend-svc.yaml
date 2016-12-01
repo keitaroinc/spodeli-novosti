@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spodeli-frontend
+  labels:
+    provider: spodeli-frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - name: spodeli-frontend
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    provider: spodeli-frontend
