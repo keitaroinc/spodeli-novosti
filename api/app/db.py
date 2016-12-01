@@ -82,6 +82,15 @@ class RethinkDBClient(object):
         else:
             return json.dumps([json.dumps(item) for item in result])
 
+    def get_everyone(self, table_name):
+        conn = self.conn
+        try:
+            result = r.table(table_name).run(conn)
+        except r.errors.ReqlOpFailedError as e:
+            raise e.message
+        else:
+            return [json.dumps(item) for item in result]
+
 
 class RethinkDBFactory(object):
     def __init__(self, host=RDB_HOST, port=RDB_PORT, db=RDB_DB, tables=None,

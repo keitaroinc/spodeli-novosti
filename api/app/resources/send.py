@@ -20,12 +20,12 @@ class SendResource(object):
             raise HTTPBadRequest('Invalid JSON', e.message)
         else:
             try:
-                with RethinkDBClient() as rdb:
-                    subscribers = rdb.get("subscribers", )
+                rdb = RethinkDBClient()
+                subscribers = rdb.get_everyone("subscribers")
 
-                map(lambda s: send_mail.delay(s["email"],
+                map(lambda s: send_mail.delay(json.loads(s)["email"],
                                               result["subject"],
                                               result["body"]), subscribers)
                 resp.body = ok(ret='Sent to worker for delivery')
             except Exception as e:
-                raise HTTPBadRequest()
+                raise HTTPBadRequest('Bad Request', e.message)
