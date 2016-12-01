@@ -9,7 +9,7 @@ spec:
   type: LoadBalancer
   ports:
   - name: spodeli-frontend
-    port: 8000
+    port: 80
     targetPort: 80
     protocol: TCP
   selector:
