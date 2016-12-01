@@ -13,7 +13,7 @@ subscriberResource = SubscriberResource()
 sendResource = SendResource()
 
 def create_app():
-    db = RethinkDBFactory
+    db = RethinkDBFactory()
     db.create_table("subscribers")
 
     app = falcon.API()

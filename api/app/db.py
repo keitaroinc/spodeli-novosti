@@ -93,9 +93,9 @@ class RethinkDBFactory(object):
         self._init()
 
     def _init(self):
-        conn = self.conn
+        conn = self.client.conn
         try:
-            r.db_create(self._db).run(conn)
+            r.db_create(self.client._db).run(conn)
         except r.errors.ReqlOpFailedError as e:
             pass
 

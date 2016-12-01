@@ -5,7 +5,7 @@ MAINTAINER Keitaro Inc <info@keitaro.com>
 WORKDIR /srv
 
 COPY requirements.txt /srv/
-COPY celery/worker /srv/celery/worker
+COPY celery /srv/celery
 
 RUN pip install -r requirements.txt
 

@@ -3,7 +3,6 @@ from rethinkdb.errors import RqlError
 import json
 from falcon import HTTPBadRequest, HTTP_400
 from falcon.util.uri import parse_query_string
-from app.db import RethinkResource
 from app.helpers.schema_validator import validate_subscriber
 from app.response import ok, bad_request
 from app.db import RethinkDBClient
