@@ -18,6 +18,10 @@ setup(
     classifiers=CLASSIFIERS,
     zip_safe=False,
     packages=find_packages(exclude=['tests']),
+	install_requires=[
+        'celery',
+        'redis',
+	],
     include_package_data=True,
     entry_points=""""""
 )
