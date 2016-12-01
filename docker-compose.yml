@@ -2,6 +2,8 @@ version: '2'
 services:
   db:
     image: rethinkdb:2.3.5
+    ports:
+      - "28015:28015"
 
   redis:
     image: redis:3.2.5
@@ -11,7 +13,15 @@ services:
     env_file: .env
     ports:
       - "8000:8000"
+    depends_on:
+      - db
 
   worker:
     build: api/celery
     env_file: .env
+
+  frontend:
+    build: .
+    env_file: .env
+    ports:
+      - "80:80"
