@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: spodeli-api
+  labels:
+    provider: spodeli-api
+spec:
+  replicas: 1
+  selector:
+    provider: spodeli-api
+  template:
+    metadata:
+      name: spodeli-api
+      labels:
+        provider: spodeli-api
+    spec:
+      containers:
+      - name: spodeli-api
+        image: keitaro/spodelinovosti-api
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5001
+        command: ["source", "/data/.env"]
