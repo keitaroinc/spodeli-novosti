@@ -16,3 +16,18 @@ def validate_subscriber(subscriber):
     validator = Draft4Validator(subscriber, format_checker=FormatChecker())
 
     return validator.validate(subscriber, schema)
+
+
+def validate_newsletter(subscriber):
+    schema = {
+        "type": "object",
+        "properties": {
+            "subject": {"type": "string"},
+            "body": {"type": "string"},
+        },
+        "required": ["subject", "body"],
+    }
+
+    validator = Draft4Validator(subscriber)
+
+    return validator.validate(subscriber, schema)
