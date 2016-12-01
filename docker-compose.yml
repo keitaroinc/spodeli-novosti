@@ -19,3 +19,9 @@ services:
   worker:
     build: api/celery
     env_file: .env
+
+  frontend:
+    build: .
+    env_file: .env
+    ports:
+      - "80:80"
