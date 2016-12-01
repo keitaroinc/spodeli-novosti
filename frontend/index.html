@@ -39,14 +39,14 @@
       </nav>
     </div>
     <div class="container">
-      <p>На овој билтен се претплатени вкупно <strong class="text-success">#</strong> корисници. Со испраќање на порака, <strong class="text-success">се обраќате до сите нив</strong>.</p>
+      <p>На овој билтен се претплатени вкупно <strong class="text-success" id="brKorisnici">#</strong> корисници. Со испраќање на порака, <strong class="text-success">се обраќате до сите нив</strong>.</p>
       <div class="tab-content">
         <div role="tabpanel" id="add-user" class="tab-pane fade">
           <h2>Додај претплатник</h2>
           <hr>
-          <p class="alert alert-danger">Порака за грешка</p>
-          <p class="alert alert-success">Порака за успешно завршена акција</p>
-          <form action="">
+          <p class="alert alert-danger" id="neuspesnoDodaden">Порака за грешка</p>
+          <p class="alert alert-success" id="uspesnoDodaden">Порака за успешно завршена акција</p>
+          <form action="" id="add">
             <div class="form-group">
               <label for="name">Име</label>
               <input class="form-control" id="name" type="text" placeholder="Внесете име" />
@@ -61,6 +61,8 @@
         <div role="tabpanel" id="send-message" class="tab-pane fade">
           <h2>Испрати порака</h2>
           <hr>
+          <p class="alert alert-success" id="uspesnoIspratena">Пораката е успешно испратена</p>
+          <p class="alert alert-danger" id="neuspesnoIspratena"></p>
           <form id="newsletter-send" action="">
             <div class="form-group">
               <label for="name">Наслов</label>
@@ -86,5 +88,6 @@
 
     <!-- Custom JS -->
     <script src="bootstrap/js/transition.js"></script>
+    <script src="js/spodeli-novosti.js"></script>
   </body>
 </html>
