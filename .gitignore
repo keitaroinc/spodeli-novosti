@@ -20,3 +20,4 @@ env.sh
 shippable
 celerybeat-schedule
 *.log
+nbproject/
