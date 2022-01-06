@@ -1,2 +1,2 @@
-celery==4.0.0
+celery==5.2.2
 redis
